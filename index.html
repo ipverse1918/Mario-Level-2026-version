@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Super Mario Retro Arcade</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts for retro game style -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-screen">
+        
+        <!-- Game HUD -->
+        <div id="hud" class="hud-layer hidden">
+            <div class="hud-item">
+                <span class="hud-label">MARIO</span>
+                <span id="hud-score" class="hud-value">000000</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">COINS</span>
+                <span id="hud-coins" class="hud-value"><span class="coin-icon">🪙</span>x00</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">WORLD</span>
+                <span id="hud-world" class="hud-value">1-1</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">TIME</span>
+                <span id="hud-time" class="hud-value">400</span>
+            </div>
+        </div>
+
+        <!-- Game Canvas -->
+        <canvas id="gameCanvas" width="640" height="480"></canvas>
+
+        <!-- Screens & Overlays -->
+        
+        <!-- 1. Start Screen -->
+        <div id="start-screen" class="menu-overlay">
+            <div class="game-logo">
+                <span class="letter-m">M</span>
+                <span class="letter-a">A</span>
+                <span class="letter-r">R</span>
+                <span class="letter-i">I</span>
+                <span class="letter-o">O</span>
+                <div class="logo-subtitle">RETRO CHRONICLES</div>
+            </div>
+            <button id="btn-start" class="btn-retro blinking">INSERT COIN & START</button>
+            <div class="instructions-panel">
+                <h3>CONTROLS</h3>
+                <p>⌨️ Keyboard: <b>A / D</b> (Move) | <b>W / Space</b> (Jump) | <b>S</b> (Crouch) | <b>J / Shift</b> (Run/Shoot)</p>
+                <p>📱 Mobile: Use D-Pad / Buttons</p>
+            </div>
+            <div class="high-score-display">
+                TOP SCORE: <span id="start-high-score">000000</span>
+            </div>
+            <div class="settings-row">
+                <button id="btn-mute" class="btn-icon">🔊 Sound On</button>
+            </div>
+        </div>
+
+        <!-- 2. Level Select Screen -->
+        <div id="level-screen" class="menu-overlay hidden">
+            <h2>SELECT WORLD</h2>
+            <div class="level-list">
+                <button class="btn-level btn-retro" data-level="1">WORLD 1-1<br><small>Overworld Plains</small></button>
+                <button class="btn-level btn-retro" data-level="2">WORLD 1-2<br><small>Underground Caverns</small></button>
+                <button class="btn-level btn-retro" data-level="3">WORLD 1-3<br><small>Bowser's Castle</small></button>
+            </div>
+            <button id="btn-back-to-menu" class="btn-retro secondary">BACK TO MENU</button>
+        </div>
+
+        <!-- 3. Pause Screen -->
+        <div id="pause-screen" class="menu-overlay hidden">
+            <h2>GAME PAUSED</h2>
+            <div class="menu-options">
+                <button id="btn-resume" class="btn-retro">RESUME</button>
+                <button id="btn-restart" class="btn-retro">RESTART LEVEL</button>
+                <button id="btn-quit" class="btn-retro secondary">QUIT TO MENU</button>
+            </div>
+        </div>
+
+        <!-- 4. Game Over Screen -->
+        <div id="gameover-screen" class="menu-overlay hidden">
+            <h1 class="text-gameover">GAME OVER</h1>
+            <div class="stats-panel">
+                <p>SCORE: <span id="gameover-score">000000</span></p>
+                <p>COINS: <span id="gameover-coins">00</span></p>
+            </div>
+            <button id="btn-retry" class="btn-retro blinking">TRY AGAIN</button>
+            <button id="btn-gameover-quit" class="btn-retro secondary">QUIT</button>
+        </div>
+
+        <!-- 5. Level Complete Screen -->
+        <div id="clear-screen" class="menu-overlay hidden">
+            <h2 class="text-clear animate-pop">STAGE CLEAR!</h2>
+            <div class="stats-panel">
+                <p>TIME LEFT BONUS: <span id="clear-time-bonus">0</span></p>
+                <p>STAGE SCORE: <span id="clear-score">000000</span></p>
+            </div>
+            <button id="btn-next-level" class="btn-retro blinking">NEXT WORLD</button>
+            <button id="btn-clear-quit" class="btn-retro secondary">QUIT</button>
+        </div>
+
+        <!-- Mobile Controls Overlay -->
+        <div id="mobile-controls" class="hidden">
+            <div class="dpad">
+                <button id="btn-left" class="control-btn dpad-btn">◀</button>
+                <div class="dpad-vertical">
+                    <button id="btn-up" class="control-btn dpad-btn">▲</button>
+                    <button id="btn-down" class="control-btn dpad-btn">▼</button>
+                </div>
+                <button id="btn-right" class="control-btn dpad-btn">▶</button>
+            </div>
+            <div class="action-buttons">
+                <button id="btn-action-b" class="control-btn action-btn red-btn">B<br><small>RUN</small></button>
+                <button id="btn-action-a" class="control-btn action-btn yellow-btn">A<br><small>JUMP</small></button>
+            </div>
+            <button id="btn-pause-toggle" class="control-btn pause-btn">⏸</button>
+    </div>
+
+    <!-- Game Scripts -->
+    <script type="module" src="js/audio.js"></script>
+    <script type="module" src="js/sprites.js"></script>
+    <script type="module" src="js/physics.js"></script>
+    <script type="module" src="js/input.js"></script>
+    <script type="module" src="js/mario.js"></script>
+    <script type="module" src="js/enemy.js"></script>
+    <script type="module" src="js/particles.js"></script>
+    <script type="module" src="js/level.js"></script>
+    <script type="module" src="js/game.js"></script>
+</body>
+</html>

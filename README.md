@@ -9,6 +9,8 @@ A premium, fully responsive 2D retro Mario platformer game designed to run direc
 
 👨‍💻 **Project Owner**: Pratik Thorat
 
+🔗 **Live Playable Webpage**: [Click here to play live on GitHub Pages!](https://ipverse1918.github.io/Mario-Level-2026-version/)
+
 ---
 
 ## 🚀 Key Showcase Features
